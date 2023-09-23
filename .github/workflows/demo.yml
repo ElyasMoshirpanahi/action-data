@@ -64,10 +64,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-files
-
       - name: Ouput all the content of the artifacts
         run: ls
-
       - name: Output file names
         run: echo "${{ needs.build.outputs.my-custom-output }}"
       - name: Deploy
