@@ -18,6 +18,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      my-custom-output:
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -25,6 +27,8 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+      - name: Publish Js files(output of jobs)
+        run: find dist/assets/*.js -type f -execdir echo '::set-output name=my-custom-output{}' ';'
       - name: Upload artifcats
         uses: actions/upload-artifact@v3
         with:
@@ -37,13 +41,12 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: fetching artifacts 
+      - name: fetching artifacts
         uses: actions/download-artifact@v3
         with:
           name: dist-files
-    
+
       - name: Ouput all the content of the artifacts
         run: ls
-    
       - name: Deploy
         run: echo "Deploying..."
